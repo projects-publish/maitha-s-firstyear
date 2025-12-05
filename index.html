@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maitha's Journey | AURAK</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Lora:ital,wght@0,400;0,600;1,400&family=Poppins:wght@300;400;600&display=swap');
+
+        :root {
+            --aurak-navy: #002F6C;
+            --aurak-gold: #DAA520;
+            --active-color: #002F6C;
+            --active-bg-tint: rgba(0, 47, 108, 0.05);
+            --paper: #fdfbf7;
+        }
+
+        body {
+            background-color: #1a1a1a;
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            background-size: cover;
+            background-position: center;
+            transition: background-image 1s ease-in-out, background-color 1s ease;
+        }
+
+        /* Dark overlay for body background only */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.8));
+            z-index: -1;
+        }
+
+        .scene {
+            width: 900px;
+            height: 650px;
+            perspective: 2000px;
+            position: relative;
+        }
+
+        .book {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 1s ease-in-out;
+        }
+
+        /* --- THE PAGES --- */
+        .pages {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-color: var(--paper);
+            background-image: linear-gradient(135deg, var(--paper) 0%, var(--active-bg-tint) 100%);
+            border-radius: 12px;
+            box-shadow: inset 20px 0 50px rgba(0,0,0,0.1), 10px 10px 40px rgba(0,0,0,0.5);
+            padding: 50px;
+            box-sizing: border-box;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            transition: background-image 0.5s ease, opacity 0.5s ease;
+        }
+
+        .pages::after {
+            content: '';
+            position: absolute;
+            top: 20px; bottom: 20px; right: 20px; left: 20px;
+            border: 2px solid var(--active-color);
+            pointer-events: none;
+            opacity: 0.3;
+            transition: border-color 0.5s ease;
+        }
+
+        /* --- Page Transparency Increased for Better Visibility --- */
+        .book.open-active .pages {
+            opacity: 0.75; 
+            background-color: rgba(253, 251, 247, 0.75);
+        }
+        
+        /* --- THE COVER (Front) --- */
+        .cover {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            border-radius: 12px;
+            transform-origin: left center;
+            transition: transform 1.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            backface-visibility: hidden;
+            
+            /* Background image and reduced gradient for visibility */
+            background-image: 
+                linear-gradient(to bottom, rgba(0, 47, 108, 0.2), rgba(0, 0, 0, 0.6)), 
+                url('cover.jpg'); 
+            
+            background-size: 100% 100%; 
+            background-repeat: no-repeat;
+            
+            border: 2px solid var(--aurak-gold);
+            box-shadow: -5px 5px 20px rgba(0,0,0,0.5);
+        }
+
+        /* Spine effect */
+        .cover::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 0; bottom: 0;
+            width: 40px;
+            background: linear-gradient(to right, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0) 100%);
+            z-index: 2;
+        }
+
+        /* --- OPEN STATE ANIMATION --- */
+        .book.open-active { transform: translateX(150px); }
+        .book.open-active .cover { transform: rotateY(-180deg); pointer-events: none; }
+        .book.open-active .pages { z-index: 5; }
+
+        /* --- UI ELEMENTS --- */
+        .logo-container {
+            width: 280px; 
+            margin-bottom: 20px;
+            text-align: center;
+            z-index: 3;
+        }
+        
+        .logo-container img {
+            width: 100%;
+            height: auto;
+            /* White border for the logo */
+            border: 3px solid white; 
+            border-radius: 5px;
+            padding: 5px;
+            background: rgba(255, 255, 255, 0.8);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+        }
+
+        .cover h1 {
+            font-family: 'Cinzel', serif;
+            font-size: 3.5rem;
+            text-align: center;
+            margin: 10px 0;
+            color: var(--aurak-gold);
+            text-shadow: 3px 3px 6px rgba(0,0,0,1);
+            letter-spacing: 4px;
+            z-index: 3;
+        }
+
+        .cover p {
+            font-size: 1.2rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            border-top: 1px solid var(--aurak-gold);
+            border-bottom: 1px solid var(--aurak-gold);
+            padding: 10px 20px;
+            background: rgba(0,0,0,0.4);
+            z-index: 3;
+            text-shadow: 2px 2px 4px black;
+        }
+
+        .open-btn {
+            margin-top: 50px;
+            padding: 15px 50px;
+            background: rgba(0,0,0,0.6);
+            border: 2px solid var(--aurak-gold);
+            color: var(--aurak-gold);
+            font-size: 1.1rem;
+            cursor: pointer;
+            border-radius: 4px;
+            font-weight: bold;
+            transition: all 0.3s;
+            z-index: 20;
+        }
+
+        .open-btn:hover {
+            background: var(--aurak-gold);
+            color: var(--aurak-navy);
+            box-shadow: 0 0 20px rgba(218, 165, 32, 0.8);
+        }
+
+        /* Content Styling */
+        .page-header { border-bottom: 2px solid var(--active-color); padding-bottom: 20px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; transition: border-color 0.5s ease; }
+        .page-header h2 { font-family: 'Cinzel', serif; color: var(--active-color); margin: 0; font-size: 1.8rem; transition: color 0.5s ease; }
+        .controls { display: flex; gap: 10px; }
+        .ctrl-btn { background: white; color: var(--active-color); border: 2px solid var(--active-color); padding: 8px 20px; border-radius: 20px; cursor: pointer; font-weight: 600; transition: all 0.3s ease; }
+        .ctrl-btn:hover { background: var(--active-color); color: white; }
+        .content-scroll { flex-grow: 1; overflow-y: auto; padding-right: 20px; font-family: 'Lora', serif; font-size: 1.15rem; line-height: 2.2; }
+        .content-scroll::-webkit-scrollbar { width: 6px; }
+        .content-scroll::-webkit-scrollbar-thumb { background-color: var(--active-color); border-radius: 3px; transition: background-color 0.5s;}
+        
+        .section-block { margin-bottom: 40px; opacity: 0.5; transition: opacity 0.5s ease; padding-left: 15px; }
+        .section-block.active-block { opacity: 1; border-left: 4px solid var(--active-color); }
+        .section-title { color: var(--active-color); font-weight: 700; font-size: 1.6rem; margin-bottom: 15px; font-family: 'Cinzel', serif; transition: color 0.5s ease; }
+        span.sentence { transition: all 0.3s ease; color: #555; cursor: pointer; padding: 2px 0; }
+        span.sentence:hover { color: var(--active-color); }
+        span.sentence.active { background-color: var(--active-color); color: white; box-shadow: 0 2px 10px rgba(0,0,0,0.15); padding: 2px 6px; border-radius: 4px; font-weight: 400; }
+
+        @media(max-width: 768px) {
+            .scene { width: 100%; height: 100vh; }
+            .cover { display: flex; } 
+            .book.open-active .cover { display: none; } 
+            .book.open-active { transform: none; }
+            .content-scroll { font-size: 1rem; }
+            .page-header h2 { font-size: 1.2rem; }
+            .cover h1 { font-size: 2.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="scene">
+    <div class="book" id="book">
+        
+        <div class="cover">
+            <div class="logo-container">
+                <img src="AURAK-Logo.png" alt="AURAK Logo">
+            </div>
+            <h1>MY JOURNEY</h1>
+            <p>............by maitha............</p>
+            <button class="open-btn" onclick="openJournal()">OPEN JOURNAL</button>
+        </div>
+
+        <div class="pages">
+            <div class="page-header">
+                <h2 id="dynamicHeader">Day One</h2>
+                <div class="controls">
+                    <button class="ctrl-btn" id="playBtn" onclick="togglePlay()">▶ Listen</button>
+                    <button class="ctrl-btn" onclick="stopAudio()">■ Reset</button>
+                </div>
+            </div>
+            <div class="content-scroll" id="contentArea"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // --- DATA & CONFIGURATION ---
+    const bgImages = {
+        // Updated to use local image files for better reliability and speed.
+        default: "cover.jpg",
+        intro: "intro.jpg",
+        lost: "lost.jpg",
+        tech: "tech.jpg",
+        help: "help.jpg",
+        family: "family.jpg",
+        end: "end.jpg"
+    };
+
+    const moodColors = {
+        intro: "#002F6C", lost: "#D35400", tech: "#6C3483", help: "#27AE60", family: "#C0392B", end: "#DAA520"
+    };
+
+    const rawData = [
+        { id: 'intro', type: 'header', text: "Day One: The Jitters" },
+        { id: 'intro', type: 'text', text: "Honestly? Starting university felt like being thrown into the deep end of a pool without floaties. I remember standing at the AURAK gate on my first day, just clutching my bag and staring at my phone. It was terrifying. High school was a tiny bubble where I knew everyone. Here, I felt invisible." },
+        { id: 'lost', type: 'header', text: "Getting Lost" },
+        { id: 'lost', type: 'text', text: "The first week was a total mess. I actually walked into the wrong classroom on Tuesday. I sat through ten minutes of an Engineering lecture before I realized I was definitely not in English class! I was too embarrassed to get up, so I just sat there nodding like I understood the math." },
+        { id: 'tech', type: 'header', text: "Tech & Blackboard" },
+        { id: 'tech', type: 'text', text: "And then there’s Blackboard. That thing is a puzzle. There was one night I panicked because I realized I hit 'Save Draft' instead of 'Submit' on a huge assignment. If I hadn't taken that UNIV 100 course, I would have totally failed." },
+        { id: 'help', type: 'header', text: "Finding Help" },
+        { id: 'help', type: 'text', text: "I used to think asking for help made me look dumb. Turns out, I was wrong. The Writing Center is my second home now. My first essay was bleeding red ink, but the tutor didn't judge me. She just helped me fix it, sentence by sentence." },
+        { id: 'family', type: 'header', text: "Family vs. Deadlines" },
+        { id: 'family', type: 'text', text: "Real talk though? The hardest part is the guilt. Family gatherings are everything in our culture. Telling my mom I couldn't come to dinner because of a presentation was rough. I finally bought a planner to block out my time. It’s not perfect, but no more all-nighters." },
+        { id: 'end', type: 'header', text: "Moving Forward" },
+        { id: 'end', type: 'text', text: "Someone in class said, 'Your network is your net worth.' I realized that saying hi to the person next to me is just as important as getting an A. Compared to that scared girl at the gate? I think I'm doing okay." }
+    ];
+
+    const contentArea = document.getElementById('contentArea');
+    const playBtn = document.getElementById('playBtn');
+    const root = document.documentElement;
+    let synth = window.speechSynthesis;
+    let utteranceQueue = [];
+    let isPlaying = false;
+    let currentSentenceIndex = 0;
+    let availableVoices = [];
+
+    function openJournal() { document.getElementById('book').classList.add('open-active'); }
+
+    function initContent() {
+        rawData.forEach((section) => {
+            if (section.type === 'header') {
+                const block = document.createElement('div');
+                block.className = 'section-block';
+                block.id = `block-${section.id}`;
+                const h = document.createElement('h3');
+                h.className = 'section-title';
+                h.innerText = section.text;
+                block.appendChild(h);
+                contentArea.appendChild(block);
+                utteranceQueue.push({ text: section.text, element: h, id: section.id, isHeader: true });
+            } else {
+                const blocks = document.getElementsByClassName('section-block');
+                const lastBlock = blocks[blocks.length - 1];
+                const p = document.createElement('p');
+                const sentences = section.text.match( /[^.!?]+[.!?]+/g );
+                if(sentences) {
+                    sentences.forEach(sentence => {
+                        const span = document.createElement('span');
+                        span.innerText = sentence + " ";
+                        span.className = "sentence";
+                        span.onclick = () => jumpToSentence(span);
+                        p.appendChild(span);
+                        utteranceQueue.push({ text: sentence, element: span, id: section.id, isHeader: false });
+                        span.dataset.index = utteranceQueue.length - 1;
+                    });
+                }
+                lastBlock.appendChild(p);
+            }
+        });
+        loadVoices();
+    }
+
+    function loadVoices() { availableVoices = synth.getVoices(); }
+
+    function updateTheme(sectionId) {
+        const color = moodColors[sectionId] || moodColors.intro;
+        root.style.setProperty('--active-color', color);
+        root.style.setProperty('--active-bg-tint', color + '15');
+        
+        // --- Setting the Body Background Image ---
+        const imgUrl = bgImages[sectionId] || bgImages.intro;
+        document.body.style.backgroundImage = `url('${imgUrl}')`;
+        // ---------------------------------------
+        
+        document.querySelectorAll('.section-block').forEach(b => b.classList.remove('active-block'));
+        const currentBlock = document.getElementById(`block-${sectionId}`);
+        if(currentBlock) currentBlock.classList.add('active-block');
+        const headerText = utteranceQueue.find(u => u.id === sectionId && u.isHeader)?.text;
+        if(headerText) document.getElementById('dynamicHeader').innerText = headerText.split(':')[0];
+    }
+
+    function togglePlay() { if(isPlaying) pauseAudio(); else playAudio(); }
+
+    function playAudio() {
+        if (synth.speaking && synth.paused) { synth.resume(); isPlaying = true; playBtn.innerText = "⏸ Pause"; return; }
+        if (synth.speaking) return; 
+        isPlaying = true; playBtn.innerText = "⏸ Pause"; speakNextSentence();
+    }
+
+    function speakNextSentence() {
+        if (currentSentenceIndex >= utteranceQueue.length || !isPlaying) { isPlaying = false; playBtn.innerText = "▶ Listen"; return; }
+        const data = utteranceQueue[currentSentenceIndex];
+        updateTheme(data.id);
+        if(data.isHeader) { currentSentenceIndex++; speakNextSentence(); return; }
+        document.querySelectorAll('.sentence.active').forEach(el => el.classList.remove('active'));
+        data.element.classList.add('active');
+        data.element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        const utter = new SpeechSynthesisUtterance(data.text);
+        
+        // --- VOICE SELECTION LOGIC TO AGGRESSIVELY FIND FEMALE VOICE ---
+        const preferredVoice = availableVoices.find(v => v.name.includes("Female") && v.lang.includes("en")) || 
+                             availableVoices.find(v => v.name.includes("Google US English")) ||
+                             availableVoices.find(v => v.name.includes("Zira")) ||
+                             availableVoices.find(v => !v.name.includes("Male") && v.lang.includes("en"));
+        // ---------------------------------------------------------------------
+
+        if(preferredVoice) utter.voice = preferredVoice;
+        utter.rate = 1.0;
+        utter.onend = () => { currentSentenceIndex++; speakNextSentence(); };
+        synth.speak(utter);
+    }
+
+    function pauseAudio() { synth.pause(); isPlaying = false; playBtn.innerText = "▶ Resume"; }
+
+    function stopAudio() {
+        synth.cancel(); isPlaying = false; currentSentenceIndex = 0; playBtn.innerText = "▶ Listen";
+        document.querySelectorAll('.active').forEach(el => el.classList.remove('active'));
+        document.querySelectorAll('.active-block').forEach(el => el.classList.remove('active-block'));
+        // Reset to default cover background
+        document.body.style.backgroundImage = `url('${bgImages.default}')`;
+        root.style.setProperty('--active-color', '#002F6C');
+        root.style.setProperty('--active-bg-tint', 'rgba(0, 47, 108, 0.05)');
+    }
+
+    function jumpToSentence(spanElement) { stopAudio(); currentSentenceIndex = parseInt(spanElement.dataset.index); playAudio(); }
+
+    if (speechSynthesis.onvoiceschanged !== undefined) { speechSynthesis.onvoiceschanged = loadVoices; }
+
+    initContent();
+</script>
+</body>
+</html>
