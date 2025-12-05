@@ -248,9 +248,7 @@
 </div>
 
 <script>
-    // --- DATA & CONFIGURATION ---
     const bgImages = {
-        // Updated to use local image files for better reliability and speed.
         default: "cover.jpg",
         intro: "intro.jpg",
         lost: "lost.jpg",
@@ -266,18 +264,48 @@
 
     const rawData = [
         { id: 'intro', type: 'header', text: "Day One: The Jitters" },
-        { id: 'intro', type: 'text', text: "Honestly? Starting university felt like being thrown into the deep end of a pool without floaties. I remember standing at the AURAK gate on my first day, just clutching my bag and staring at my phone. It was terrifying. High school was a tiny bubble where I knew everyone. Here, I felt invisible." },
+        { 
+            id: 'intro', 
+            type: 'text', 
+            text: "Honestly? Starting university felt like someone picked me up from everything familiar and dropped me somewhere new without warning. I still remember how heavy my backpack felt, even though it barely had anything inside it that day. I stood outside the AURAK gate pretending to text someone just so I would look busy. It’s funny now, but in that moment it felt like everyone around me already knew where to go and what to do. High school was small—comfortable. I knew the teachers, the hallways, even the weird noise the AC made in the cafeteria. Here, everything felt huge and loud, and I felt like a tiny, lost dot in the middle of it all."
+        },
+
         { id: 'lost', type: 'header', text: "Getting Lost" },
-        { id: 'lost', type: 'text', text: "The first week was a total mess. I actually walked into the wrong classroom on Tuesday. I sat through ten minutes of an Engineering lecture before I realized I was definitely not in English class! I was too embarrassed to get up, so I just sat there nodding like I understood the math." },
+        { 
+            id: 'lost', 
+            type: 'text', 
+            text: "The first week was pure chaos. I wish someone had recorded the moment I walked confidently into the wrong classroom on Tuesday. I sat down, took out my notebook, and listened to ten full minutes of an Engineering lecture on electrical systems before it hit me: this was definitely not English Literature. The professor was writing equations that looked like alien handwriting. I didn’t want to stand up and make a scene, so I did what anyone would do—I nodded along like I understood voltage currents. When class ended, I packed my stuff slowly, waited for everyone to leave, and then slipped out pretending that was my plan all along."
+        },
+
         { id: 'tech', type: 'header', text: "Tech & Blackboard" },
-        { id: 'tech', type: 'text', text: "And then there’s Blackboard. That thing is a puzzle. There was one night I panicked because I realized I hit 'Save Draft' instead of 'Submit' on a huge assignment. If I hadn't taken that UNIV 100 course, I would have totally failed." },
+        { 
+            id: 'tech', 
+            type: 'text', 
+            text: "Blackboard should come with a warning label: **'May cause panic attacks.'** I remember one night around midnight when I finished a huge assignment. I was so proud of myself for not procrastinating. I clicked something — ‘Save Draft’ — then closed my laptop thinking I was done. The next morning my heart actually stopped when I saw that it wasn’t submitted. If it wasn’t for UNIV 100 teaching me how to navigate assignments and discussion boards, I would have failed that class in week one. The amount of buttons, announcements, folders and hidden links on Blackboard still confuses me, but at least I double-check everything now."
+        },
+
         { id: 'help', type: 'header', text: "Finding Help" },
-        { id: 'help', type: 'text', text: "I used to think asking for help made me look dumb. Turns out, I was wrong. The Writing Center is my second home now. My first essay was bleeding red ink, but the tutor didn't judge me. She just helped me fix it, sentence by sentence." },
+        { 
+            id: 'help', 
+            type: 'text', 
+            text: "I used to think that asking for help meant I wasn’t smart enough. Turns out, it just means I'm human. The Writing Center became my safe space. I walked in with my first essay thinking I did a decent job, only to get it back covered in red markings like someone had committed a crime on paper. But the tutor wasn’t harsh at all — she was patient. She explained every correction, introduced me to transitions I never heard of, and showed me how to make my ideas breathe better on the page. Every session felt like someone untangling a knot in my head."
+        },
+
         { id: 'family', type: 'header', text: "Family vs. Deadlines" },
-        { id: 'family', type: 'text', text: "Real talk though? The hardest part is the guilt. Family gatherings are everything in our culture. Telling my mom I couldn't come to dinner because of a presentation was rough. I finally bought a planner to block out my time. It’s not perfect, but no more all-nighters." },
+        { 
+            id: 'family', 
+            type: 'text', 
+            text: "Balancing family and university is its own subject. At home, weekends usually mean gatherings, teas, cousins, loud conversations, and someone insisting I eat more even after I’m full. So telling my mom I couldn’t come to dinner because I had a presentation felt like I was choosing school over family. There was this guilt that followed me around all week. Eventually I bought a cheap planner from a stationery shop and started scheduling everything: classes, assignments, family dinners, even breaks. It isn’t perfect — I still mess up — but I’ve slept better since I stopped trying to do everything at once."
+        },
+
         { id: 'end', type: 'header', text: "Moving Forward" },
-        { id: 'end', type: 'text', text: "Someone in class said, 'Your network is your net worth.' I realized that saying hi to the person next to me is just as important as getting an A. Compared to that scared girl at the gate? I think I'm doing okay." }
+        { 
+            id: 'end', 
+            type: 'text', 
+            text: "One of my classmates said something the other day that stuck with me: ‘Your network is your net worth.’ It sounded like something from a podcast, but it made sense. I’m slowly learning that smiling at strangers on campus, joining group chats, or saying yes to study sessions can open unexpected doors. Looking back at that girl standing frozen at the gate on day one, I feel a little proud. I’m not fully confident yet, but I’m getting there, one conversation, one mistake, one late-night assignment at a time."
+        }
     ];
+
 
     const contentArea = document.getElementById('contentArea');
     const playBtn = document.getElementById('playBtn');
@@ -393,4 +421,5 @@
     initContent();
 </script>
 </body>
+
 </html>
